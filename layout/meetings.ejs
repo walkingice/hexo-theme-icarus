@@ -1,0 +1,52 @@
+<%
+    posts = undefined;
+    if (page.query_tag) {
+        q = site.tags.findOne({name: page.query_tag});
+        if (q) {
+            posts = q.posts;
+        }
+    }
+%>
+
+<div class="meeting-container">
+    <div class="meeting-row">
+        <div class="meeting-main-content">
+            <h1><%= page.title %></h1>
+            <%- page.content %>
+        </div>
+    </div>
+
+    <!-- sort in reverse ordering -->
+    <% posts && posts.sort('date', -1).each(function (post, i) { %>
+        <%
+            let typeClass = "meeting-type-none";
+            if (post.meeting_type == "regular") {
+                typeClass = 'meeting-type-regular';
+            } else if (post.meeting_type == 'interim') {
+                typeClass = 'meeting-type-interim';
+            }
+
+            let link = (post.link) ? url_for(post.link) : url_for(post.path);
+        %>
+        <div class="meeting-cell">
+            <a class="meeting-cell-link" href="<%= link %>" target="_blank">
+                <div class="meeting-cell-container">
+                    <div class="<%- typeClass %>"></div>
+                    <div class="meeting-cell-title"><%= post.title %></div>
+                    <div class="meeting-cell-content">
+                        <p><%= post.description %></p>
+                        <% if (post.date) { %>
+                            <div class="meeting-cell-date">
+                                <i class="fa fa-calendar"></i>
+                                <time datetime="<%= date_xml(post.date) %>" itemprop="datePublished"><%= date(post.date, null) %></time>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+        </div>
+    <% }); %>
+
+    </div>
+</div>
+
