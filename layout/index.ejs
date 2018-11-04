@@ -1,11 +1,8 @@
-<% page.posts.each(function(post) { %>
-    <%- partial('common/article', { post: post, index: true }) %>
-<% });
-if (page.total > 1) { %>
-    <nav id="page-nav">
-        <%- paginator({
-            prev_text: '&laquo; ' + __('nav.prev'),
-            next_text: __('nav.next') + ' &raquo;'
-        }) %>
-    </nav>
-<% } %>
+<div id="index-body" class="promotion-container">
+    <div class="promotion-row">
+        <div class="promotion-main-content">
+            <%- page.content %>
+        </div>
+    </div>
+</div>
+
